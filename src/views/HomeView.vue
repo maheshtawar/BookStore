@@ -1,9 +1,5 @@
 <template>
-  <div class="container mb-5">
-    <div class="row">
-      <card-list-view :books="books"></card-list-view>
-    </div>
-  </div>
+  <card-list-view :books="books"></card-list-view>
 </template>
 
 <script setup>
