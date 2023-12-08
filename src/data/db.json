@@ -136,7 +136,6 @@
       "description": "The Girl with the Dragon Tattoo is a mystery novel by Stieg Larsson. It follows investigative journalist Mikael Blomkvist and hacker Lisbeth Salander as they unravel a complex web of corruption and secrets."
     }
   ],
-
   "users": [
     {
       "id": 1,
@@ -147,24 +146,11 @@
       "id": 2,
       "username": "user2",
       "password": "password2"
-    }
-  ],
-
-  "cart": [
-    {
-      "userId": 1,
-      "bookId": 1,
-      "quantity": 2
     },
     {
-      "userId": 1,
-      "bookId": 3,
-      "quantity": 1
-    },
-    {
-      "userId": 2,
-      "bookId": 2,
-      "quantity": 3
+      "username": "",
+      "password": "",
+      "id": 3
     }
   ]
 }

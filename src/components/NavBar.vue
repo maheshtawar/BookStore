@@ -35,7 +35,7 @@
         <form
           class="d-flex me-2"
           role="search"
-          @submit.prevent="router.push(`/book/?q=${searchQuery}`)"
+          @submit.prevent="router.push(`/book?q=${searchQuery}`)"
         >
           <input
             v-model="searchQuery"
@@ -47,8 +47,13 @@
           />
           <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
-        <router-link to="/login" class="btn btn-outline-success me-2">Login</router-link>
-        <router-link to="/signup" class="btn btn-outline-success me-2">Signup</router-link>
+        <span v-if="!authStore.token">
+          <router-link to="/login" class="btn btn-outline-success me-2">Login</router-link>
+        </span>
+        <span v-else>
+          <button @click="logout" class="btn btn-outline-success me-2">Logout</button>
+        </span>
+        <!-- <router-link to="/signup" class="btn btn-outline-success me-2">Signup</router-link> -->
       </div>
     </div>
   </nav>
@@ -62,4 +67,11 @@ const searchQuery = ref('')
 
 import { useCartStore } from '../stores/counter.js'
 const cartStore = useCartStore()
+
+import { auth } from '../stores/counter.js'
+const authStore = auth()
+
+const logout = () => {
+  authStore.token = false
+}
 </script>

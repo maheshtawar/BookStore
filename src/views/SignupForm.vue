@@ -12,7 +12,13 @@
           <label class="w-6rem">Password</label>
           <InputText id="password" type="password" class="w-12rem" />
         </div>
-        <Button label="Sign Up" icon="pi pi-user-plus" severity="success" class="w-10rem"></Button>
+        <Button
+          @click="signup"
+          label="Sign Up"
+          icon="pi pi-user-plus"
+          severity="success"
+          class="w-10rem"
+        ></Button>
       </div>
       <div class="w-full md:w-2">
         <Divider layout="vertical" class="hidden md:flex"><b>OR</b></Divider>
@@ -36,4 +42,26 @@ import 'primevue/resources/themes/lara-light-green/theme.css'
 import Button from 'primevue/button'
 import Divider from 'primevue/divider'
 import InputText from 'primevue/inputtext'
+
+import { ref } from 'vue'
+import { auth } from '../stores/counter.js'
+const authStore = auth()
+const username = ref('')
+const password = ref('')
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const signup = async () => {
+  const isSignedUp = await authStore.signup({
+    username: username.value,
+    password: password.value
+  })
+
+  if (isSignedUp) {
+    router.push('/')
+    alert('Signup successful')
+  } else {
+    alert('Signup failed. Please try again.')
+  }
+}
 </script>

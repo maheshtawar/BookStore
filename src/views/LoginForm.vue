@@ -6,13 +6,13 @@
       >
         <div class="flex flex-wrap justify-content-center align-items-center gap-2">
           <label class="w-6rem">Username</label>
-          <InputText id="username" type="text" class="w-12rem" />
+          <InputText v-model="username" id="username" type="text" class="w-12rem" />
         </div>
         <div class="flex flex-wrap justify-content-center align-items-center gap-2">
           <label class="w-6rem">Password</label>
-          <InputText id="password" type="password" class="w-12rem" />
+          <InputText v-model="password" id="password" type="password" class="w-12rem" />
         </div>
-        <Button label="Login" icon="pi pi-user" class="w-10rem mx-auto"></Button>
+        <Button @click="login" label="Login" icon="pi pi-user" class="w-10rem mx-auto"></Button>
       </div>
       <div class="w-full md:w-2">
         <Divider layout="vertical" class="hidden md:flex"><b>OR</b></Divider>
@@ -37,4 +37,27 @@ import 'primevue/resources/themes/lara-light-green/theme.css'
 import Button from 'primevue/button'
 import Divider from 'primevue/divider'
 import InputText from 'primevue/inputtext'
+
+import { ref } from 'vue'
+import { auth } from '../stores/counter.js'
+const authStore = auth()
+const username = ref('')
+const password = ref('')
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const login = async () => {
+  const isAuthenticated = await authStore.login({
+    username: username.value,
+    password: password.value
+  })
+  // authStore.login('user1', 'password1')
+  // console.log(isAuthenticated, authStore.token)
+  if (isAuthenticated) {
+    router.push('/')
+    // alert('yes')
+  } else {
+    alert('OPPS !! Something Wrong Please Try Again')
+  }
+}
 </script>

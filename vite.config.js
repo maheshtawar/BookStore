@@ -17,6 +17,11 @@ export default defineConfig({
         target: 'http://localhost:3000', // JSON Server URL
         ws: true,
         changeOrigin: true
+      },
+      '/users': {
+        target: 'http://localhost:3000', // JSON Server URL
+        ws: true,
+        changeOrigin: true
       }
     }
   }

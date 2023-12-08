@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 export const useCartStore = defineStore('cart', () => {
   const cartItems = ref([])
@@ -43,4 +44,55 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   return { cartItems, totalItems, totalPrice, addToCart, removeFromCart }
+})
+
+export const auth = defineStore('auth', () => {
+  const token = ref(false)
+
+  async function login({ username, password }) {
+    try {
+      const response = await axios.get('/users?username=' + username + '&password=' + password)
+      // console.log(response, response.data.length)
+      if (response.status === 200 && response.data.length > 0) {
+        token.value = true
+        // console.log(token.value)
+        return true
+      } else {
+        // console.log(token.value)
+        return false
+      }
+    } catch (error) {
+      alert('Error during authentication:', error)
+      return false
+    }
+  }
+
+  async function signup({ username, password }) {
+    try {
+      const existingUser = await axios.get('/users?username=' + username)
+
+      if (existingUser.data.length > 0) {
+        alert('Username already taken. Please choose a different one.')
+        return false
+      }
+
+      const response = await axios.post('/users', {
+        username,
+        password
+      })
+
+      if (response.status === 201) {
+        token.value = true
+        return true
+      } else {
+        alert('Failed to create user. Please try again.')
+        return false
+      }
+    } catch (error) {
+      alert('Error during signup:')
+      return false
+    }
+  }
+
+  return { token, login, signup }
 })
