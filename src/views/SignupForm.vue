@@ -6,11 +6,11 @@
       >
         <div class="flex flex-wrap justify-content-center align-items-center gap-2">
           <label class="w-6rem">Username</label>
-          <InputText id="username" type="text" class="w-12rem" />
+          <InputText v-model="username" id="username" type="text" class="w-12rem" />
         </div>
         <div class="flex flex-wrap justify-content-center align-items-center gap-2">
           <label class="w-6rem">Password</label>
-          <InputText id="password" type="password" class="w-12rem" />
+          <InputText v-model="password" id="password" type="password" class="w-12rem" />
         </div>
         <Button
           @click="signup"

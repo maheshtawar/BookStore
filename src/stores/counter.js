@@ -68,6 +68,7 @@ export const auth = defineStore('auth', () => {
   }
 
   async function signup({ username, password }) {
+    // console.log(username, password)
     try {
       const existingUser = await axios.get('/users?username=' + username)
 
