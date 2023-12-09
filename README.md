@@ -33,3 +33,17 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Use nvm version 16.17.0
+
+## Install Dependency
+
+```sh
+npm install
+```
+
+### Run/Start Project
+
+```sh
+npm run dev
+```

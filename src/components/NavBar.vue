@@ -8,7 +8,7 @@
           src="https://img.icons8.com/cute-clipart/64/book.png"
           alt="book"
         />
-        <span class="fs-4">Book Store</span>
+        <span class="fs-4">{{ $t('Book Store') }}</span>
       </router-link>
       <button
         class="navbar-toggler"
@@ -24,29 +24,37 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link to="/" class="nav-link active"> Home </router-link>
+            <router-link to="/" class="nav-link active"> {{ $t('Home') }} </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/cart" class="nav-link">
-              Cart <span class="badge bg-secondary">{{ cartStore.totalItems }}</span>
+              {{ $t('Cart') }} <span class="badge bg-secondary">{{ cartStore.totalItems }}</span>
             </router-link>
           </li>
         </ul>
         <form
           class="d-flex me-2"
           role="search"
-          @submit.prevent="router.push(`/book?q=${searchQuery}`)"
+          @submit.prevent="$router.push(`/book?q=${searchQuery}`)"
         >
           <input
             v-model="searchQuery"
             class="form-control me-2"
             type="search"
-            placeholder="Search"
+            :placeholder="$t('Search')"
             aria-label="Search"
             required
           />
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-outline-success" type="submit">{{ $t('Search') }}</button>
         </form>
+        <dropdown
+          v-model="lang"
+          :options="langs"
+          optionLabel="Language"
+          placeholder="Change Language"
+          @change="changeLanguage(lang)"
+          class="me-2"
+        ></dropdown>
         <span v-if="!authStore.token">
           <router-link to="/login" class="btn btn-outline-success me-2">Login</router-link>
         </span>
@@ -59,9 +67,63 @@
   </nav>
 </template>
 
-<script setup>
+<script>
+import dropdown from 'primevue/dropdown'
+import { useCartStore } from '../stores/counter.js'
+import { auth } from '../stores/counter.js'
+import { loadLanguageAsync } from '@/setup/i18n.js'
+export default {
+  data() {
+    return {
+      searchQuery: '',
+      cartStore: useCartStore(),
+      authStore: auth(),
+      langs: [
+        {
+          Language: 'Hindi',
+          lang: 'hi'
+        },
+        {
+          Language: 'Marathi',
+          lang: 'mr'
+        },
+        {
+          Language: 'English',
+          lang: 'en'
+        }
+      ],
+      lang: { Language: 'English', lang: 'en' }
+    }
+  },
+  methods: {
+    logout() {
+      this.authStore.token = false
+    },
+    changeLanguage(lang) {
+      // console.log(lang)
+      if (Object.keys(lang).length > 0 && lang !== undefined) {
+        this.$i18n.locale = lang.lang
+        this.$i18n.fallbackLocale = lang.lang
+        loadLanguageAsync(lang.lang)
+        console.log(lang.lang)
+      }
+    }
+  },
+  components: {
+    dropdown
+  },
+  mounted() {
+    this.$i18n.locale = this.lang.lang
+    this.$i18n.fallbackLocale = this.lang.lang
+    loadLanguageAsync(this.lang.lang)
+  }
+}
+</script>
+
+<!-- <script setup>
+import dropdown from 'primevue/dropdown'
 import { RouterLink, useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 const router = useRouter()
 const searchQuery = ref('')
 
@@ -74,4 +136,30 @@ const authStore = auth()
 const logout = () => {
   authStore.token = false
 }
-</script>
+
+const langs = reactive([
+  {
+    Language: 'Hindi',
+    lang: 'hi'
+  },
+  {
+    Language: 'Marathi',
+    lang: 'mr'
+  },
+  {
+    Language: 'English',
+    lang: 'en'
+  }
+])
+import { loadLanguageAsync } from '@/setup/i18n.js'
+function changeLanguage(lang) {
+  console.log(lang)
+  if (Object.keys(lang).length > 0 && lang !== undefined) {
+    this.$i18n.locale = lang.lang
+    this.$i18n.fallbackLocale = lang.lang
+    loadLanguageAsync(lang.lang)
+    console.log(lang.lang)
+  }
+}
+
+</script> -->
